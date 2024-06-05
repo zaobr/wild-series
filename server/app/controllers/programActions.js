@@ -1,5 +1,6 @@
-// Some data to make the trick
+const tables = require("../../database/tables");
 
+// Some data to make the trick
 const programs = [
     {
       id: 1,
@@ -37,16 +38,10 @@ const programs = [
     }
   };
   
-  const browse = (req, res) => {
-    if (req.query.q != null) {
-      const filteredPrograms = programs.filter((program) =>
-        program.synopsis.includes(req.query.q)
-      );
-  
-      res.json(filteredPrograms);
-    } else {
-      res.json(programs);
-    }
+  const browse = async (req, res) => {
+    const programsFromDB = await tables.program.readAll();
+
+    return res.json(programsFromDB);
   };
   
   // Export it to import it somewhere else
